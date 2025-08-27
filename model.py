@@ -72,9 +72,9 @@ class RDB_Block(nn.Module):
         return output
 
 
-class low_frequecy_network(nn.Module):
+class low_frequency_network(nn.Module):
     def __init__(self, in_channels,inner_channel = 64):
-        super(low_frequecy_network, self).__init__()
+        super(low_frequency_network, self).__init__()
         self.conv_in = nn.Conv2d(in_channels, inner_channel,
                       kernel_size=9, padding='same', bias=False)
         self.RB_1 = RB_Block(inner_channel)
@@ -102,9 +102,9 @@ class low_frequecy_network(nn.Module):
         return out,[rb1, rb2, rb3, rb4]
 
 
-class high_frequecy_network(nn.Module):
+class high_frequency_network(nn.Module):
     def __init__(self, in_channels,inner_channel = 64):
-        super(high_frequecy_network, self).__init__()
+        super(high_frequency_network, self).__init__()
         self.conv_in = nn.Conv2d(in_channels, inner_channel,
                       kernel_size=9, padding='same', bias=False)
         self.RDB_1 = RDB_Block(inner_channel)
@@ -137,9 +137,9 @@ class high_frequecy_network(nn.Module):
 class wavelet_net(nn.Module):
     def __init__(self,J=1, wave='db1', mode = 'zero',inner_channel=64):
         super(wavelet_net, self).__init__()
-        self.low = low_frequecy_network(3,inner_channel)
-        self.high = high_frequecy_network(9,inner_channel)
-        # self.high = high_frequecy_network(3,64)
+        self.low = low_frequency_network(3,inner_channel)
+        self.high = high_frequency_network(9,inner_channel)
+        # self.high = high_frequency_network(3,64)
         self.sfm = SWTForward(J, wave, mode,requires_grad=True)
         self.ifm = SWTInverse(wave, mode,requires_grad=True)
     def forward(self,img):
